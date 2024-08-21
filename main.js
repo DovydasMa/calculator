@@ -54,6 +54,10 @@ const checkLastElement = (str) => {
   return isNaN(str[str.length - 1]) ? Left(str) : Right(str);
 };
 
+const checkFirstElement = (str) => {
+  return isNaN(str[0]) ? Left(str) : Right(str);
+};
+
 const validString = curry((exp, str) => str.replace(new RegExp(exp, "g"), ""));
 const onlyNumbersOperators = validString("0-9+\\-*/");
 const splitString = curry((exp, str) => str.match(new RegExp(exp, "g")));
@@ -62,7 +66,8 @@ const splitNumbersOperators = splitString("(\\d+)|([+\\-*/])");
 const processExpression = compose(
   chain((str) => Right(splitNumbersOperators(str))),
   map(onlyNumbersOperators),
-  checkLastElement,
+  map(checkLastElement),
+  checkFirstElement
 );
 const arrNumOp = (str) => {
   const numbers = transformToNumbers(str.filter((_, i) => i % 2 === 0));
