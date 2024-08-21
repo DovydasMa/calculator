@@ -1,46 +1,16 @@
-const { curry, compose, concat } = R;
+import crocks from "crocks";
 
-class Maybe {
-  static of(x) {
-    return new Maybe(x);
-  }
+const {
+  Either,
+  curry,
+  compose,
+  map,
+  chain,
+} = crocks;
 
-  get isNothing() {
-    return (
-      this.$value === null ||
-      this.$value === undefined ||
-      Number.isNaN(this.$value)
-    );
-  }
-
-  constructor(x) {
-    this.$value = x;
-  }
-
-  map(fn) {
-    return this.isNothing ? this : Maybe.of(fn(this.$value));
-  }
-
-  inspect() {
-    return this.isNothing ? "Nothing" : `Just(${inspect(this.$value)})`;
-  }
-}
-const maybe = curry((v, f, m) => {
-  if (m.isNothing) {
-    return showDisplay(v);
-  }
-
-  return f(m.$value);
-});
+const { Left, Right } = Either;
 
 let display = "";
-
-const showDisplay = (display) =>
-  (document.getElementById("display").innerHTML = display);
-const add = curry((x, y) => x + y);
-const divide = curry((num1, num2) => num1 / num2);
-const subtract = curry((num1, num2) => num1 - num2);
-const multiply = curry((num1, num2) => num1 * num2);
 
 const calculate = curry(({ numbers, operators }) => {
   for (let i = 0; i < operators.length; i++) {
@@ -77,26 +47,37 @@ const calculate = curry(({ numbers, operators }) => {
 
   return res;
 });
-const transformToNumbers = (strArray) => {
-  return strArray.map((str) => {
-    const num = parseFloat(str);
-    return num;
-  });
+
+const transformToNumbers = map(parseFloat);
+
+const checkLastElement = (str) => {
+  return isNaN(str[str.length - 1]) ? Left(str) : Right(str);
 };
 
-const checkSecondNumber = (str) => {
-  return Maybe.of(isNaN(str[str.length - 1]) ? null : str);
+const validString = curry((exp, str) => str.replace(new RegExp(exp, "g"), ""));
+const onlyNumbersOperators = validString("0-9+\\-*/");
+const splitString = curry((exp, str) => str.match(new RegExp(exp, "g")));
+const splitNumbersOperators = splitString("(\\d+)|([+\\-*/])");
+
+const processExpression = compose(
+  chain((str) => Right(splitNumbersOperators(str))),
+  map(onlyNumbersOperators),
+  checkLastElement,
+);
+const arrNumOp = (str) => {
+  const numbers = transformToNumbers(str.filter((_, i) => i % 2 === 0));
+  const operators = str.filter((_, i) => i % 2 !== 0);
+  return { numbers, operators };
 };
-const validString = curry((exp, str) => {
-  const regex = new RegExp(exp, "g");
-  const string = str;
-  return string.replace(regex, "");
-});
-const splitString = curry((exp, str) => {
-  const regex = new RegExp(exp, "g");
-  const string = str;
-  return string.match(regex);
-});
+const calculateResult = compose(
+  map(calculate),
+  map(arrNumOp),
+  processExpression,
+);
+
+const showDisplay = (display) => {
+  document.getElementById("display").innerHTML = display;
+};
 
 const numbers = document.getElementById("numbers");
 numbers.addEventListener("click", function (e) {
@@ -104,22 +85,7 @@ numbers.addEventListener("click", function (e) {
   display += number;
   showDisplay(display);
 });
-const onlyNumbersOperators = validString("0-9+\\-*/");
-const splitNumbersOperators = splitString("(\\d+)|([+\\-*/])");
-const processExpression = (str) =>
-  compose(
-    maybe("missing number", arrNumOp),
-    checkSecondNumber,
-    splitNumbersOperators,
-    maybe("Please enter something", onlyNumbersOperators),
-  )(Maybe.of(str));
-const calculateResult = ({ numbers, operators }) =>
-  compose(showDisplay, calculate)({ numbers, operators });
-const arrNumOp = (str) => {
-  let numbers = transformToNumbers(str.filter((_, i) => i % 2 === 0));
-  let operators = str.filter((_, i) => i % 2 !== 0);
-  return { numbers, operators };
-};
+
 const operations = document.getElementById("arithmetic-operations");
 operations.addEventListener("click", function (e) {
   const operation = e.target.getAttribute("operation");
@@ -127,7 +93,18 @@ operations.addEventListener("click", function (e) {
   showDisplay(display);
 
   if (operation == "=") {
-    display = calculateResult(processExpression(display));
+    const result = calculateResult(display);
+    result.either(
+      (err) => {
+        display = `${err}`;
+        console.error("can't calculate this expression:" + display);
+      },
+      (res) => {
+        display = `${res}`;
+      },
+    );
+    showDisplay(display);
   }
 });
+
 
