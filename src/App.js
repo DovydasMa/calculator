@@ -78,7 +78,6 @@ const processExpression = compose(
   checkFirstElement
 );
 const arrNumOp = (str) => {
-  console.log(str);
   const numbers = transformToNumbers(str.filter((_, i) => i % 2 === 0));
   const operators = str.filter((_, i) => i % 2 !== 0);
   return { numbers, operators };
