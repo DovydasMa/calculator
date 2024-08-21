@@ -56,17 +56,29 @@ const splitString = curry((exp, str) => str.match(new RegExp(exp, "g")));
 const splitNumbersOperators = splitString("(\\d+\\.\\d+|\\d+)|([+\\-*/])");
 const checkMatchingPattern = curry((exp, str) => new RegExp(exp).test(str));
 const consecutiveOperations = checkMatchingPattern("[+\\-*/]{2,}");
+const twoDots = checkMatchingPattern("\\b\\d+(\\.\\d+){2,}\\b");
+const emptyDot = checkMatchingPattern("[+\\-*/]\\.");
+
 const checkConsecutiveOperations = (str) => {
   return consecutiveOperations(str) ? Left(str) : Right(str);
 };
+const checkTwoDots = (str) => {
+  return twoDots(str) ? Left(str) : Right(str);
+};
+const checkEmptyDot = (str) => {
+  return emptyDot(str) ? Left(str) : Right(str);
+};
 const processExpression = compose(
   chain((str) => Right(splitNumbersOperators(str))),
+  chain(checkEmptyDot),
+  chain(checkTwoDots),
   chain(checkConsecutiveOperations),
   map(onlyNumbersOperators),
   chain(checkLastElement),
   checkFirstElement
 );
 const arrNumOp = (str) => {
+  console.log(str);
   const numbers = transformToNumbers(str.filter((_, i) => i % 2 === 0));
   const operators = str.filter((_, i) => i % 2 !== 0);
   return { numbers, operators };
