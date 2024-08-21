@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,25 +8,24 @@
   <body onload="showDisplay('0')">
     <div id="display"></div>
     <div id="numbers">
-      <button type="button" number="0">0</button>
-      <button type="button" number="1">1</button>
-      <button type="button" number="2">2</button>
-      <button type="button" number="3">3</button>
-      <button type="button" number="4">4</button>
-      <button type="button" number="5">5</button>
-      <button type="button" number="6">6</button>
-      <button type="button" number="7">7</button>
-      <button type="button" number="8">8</button>
-      <button type="button" number="9">9</button>
+      <button type="button" data-number="0">0</button>
+      <button type="button" data-number="1">1</button>
+      <button type="button" data-number="2">2</button>
+      <button type="button" data-number="3">3</button>
+      <button type="button" data-number="4">4</button>
+      <button type="button" data-number="5">5</button>
+      <button type="button" data-number="6">6</button>
+      <button type="button" data-number="7">7</button>
+      <button type="button" data-number="8">8</button>
+      <button type="button" data-number="9">9</button>
     </div>
     <div id="arithmetic-operations">
-      <button type="button" operation="*">*</button>
-      <button type="button" operation="/">/</button>
-      <button type="button" operation="-">-</button>
-      <button type="button" operation="+">+</button>
-      <button type="button" operation="=">=</button>
+      <button type="button" data-operation="*">*</button>
+      <button type="button" data-operation="/">/</button>
+      <button type="button" data-operation="-">-</button>
+      <button type="button" data-operation="+">+</button>
+      <button type="button" data-operation="=">=</button>
     </div>
+    <script type="module" src="main.js"></script>
   </body>
-
-  <script type="module" src="main.js"></script>
 </html>
