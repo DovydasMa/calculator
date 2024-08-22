@@ -56,9 +56,11 @@ const splitString = curry((exp, str) => str.match(new RegExp(exp, "g")));
 const splitNumbersOperators = splitString("(\\d+\\.\\d+|\\d+)|([+\\-*/])");
 const checkMatchingPattern = curry((exp, str) => new RegExp(exp).test(str));
 const consecutiveOperations = checkMatchingPattern("[+\\-*/]{2,}");
-const twoDots = checkMatchingPattern("\\b\\d+(\\.\\d+){2,}\\b");
+const twoDots = checkMatchingPattern("\\d+\\.\\d+\\.$");
+const doubleDots = checkMatchingPattern("\\d*\\.\\.\\d*");
 const emptyDot = checkMatchingPattern("[+\\-*/]\\.");
-
+const tenDigitsMax = checkMatchingPattern("\\d{11,}");
+const tenOperationsMax = checkMatchingPattern("[+\\-*/^]{10,}");
 const checkConsecutiveOperations = (str) => {
   return consecutiveOperations(str) ? Left(str) : Right(str);
 };
@@ -68,16 +70,32 @@ const checkTwoDots = (str) => {
 const checkEmptyDot = (str) => {
   return emptyDot(str) ? Left(str) : Right(str);
 };
-const processExpression = compose(
-  chain((str) => Right(splitNumbersOperators(str))),
-  chain(checkEmptyDot),
+const checkDoubleDots = (str) => {
+  return doubleDots(str) ? Left(str) : Right(str);
+};
+const checkTenDigitsMax = (str) => {
+  return tenDigitsMax(str) ? Left(str) : Right(str);
+};
+const checktenOperationsMax = (str) => {
+  return tenOperationsMax(str) ? Left(str) : Right(str);
+};
+
+const validateExpression = compose(
+  chain(checktenOperationsMax),
+  chain(checkTenDigitsMax),
   chain(checkTwoDots),
+  chain(checkDoubleDots),
+  chain(checkEmptyDot),
   chain(checkConsecutiveOperations),
-  map(onlyNumbersOperators),
-  chain(checkLastElement),
   checkFirstElement
 );
+const processExpression = compose(
+  chain((str) => Right(splitNumbersOperators(str))),
+  map(onlyNumbersOperators),
+  checkLastElement
+);
 const arrNumOp = (str) => {
+  console.log(str);
   const numbers = transformToNumbers(str.filter((_, i) => i % 2 === 0));
   const operators = str.filter((_, i) => i % 2 !== 0);
   return { numbers, operators };
@@ -92,12 +110,30 @@ export default function App() {
 
   const handleNumberClick = (e) => {
     const number = e.target.getAttribute("data-number");
-    setDisplay((prev) => (prev === "0" ? number : prev + number));
+    const validateValue = display === "0" ? number : display + number;
+    const result = validateExpression(validateValue);
+    result.either(
+      (err) => {
+        console.error("Trying to enter illegal expression: " + err);
+      },
+      (res) => {
+        setDisplay(`${res}`);
+      }
+    );
   };
 
   const handleOperationClick = (e) => {
     const operation = e.target.getAttribute("data-operation");
-    setDisplay((prev) => prev + operation);
+    const validateValue = display + operation;
+    const result = validateExpression(validateValue);
+    result.either(
+      (err) => {
+        console.error("Trying to enter illegal expression: " + err);
+      },
+      (res) => {
+        setDisplay(`${res}`);
+      }
+    );
 
     if (operation === "=") {
       const result = calculateResult(display);
