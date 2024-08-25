@@ -42,14 +42,6 @@ const calculate = curry(({ numbers, operators }) => {
 });
 
 const transformToNumbers = map(parseFloat);
-
-const checkLastElement = (str) => {
-  return isNaN(str[str.length - 1]) ? Left(str) : Right(str);
-};
-const checkFirstElement = (str) => {
-  return isNaN(str[0]) ? Left(str) : Right(str);
-};
-
 const validString = curry((exp, str) => str.replace(new RegExp(exp, "g"), ""));
 const onlyNumbersOperators = validString("0-9+\\-*/.");
 const splitString = curry((exp, str) => str.match(new RegExp(exp, "g")));
@@ -61,32 +53,24 @@ const doubleDots = checkMatchingPattern("\\d*\\.\\.\\d*");
 const emptyDot = checkMatchingPattern("[+\\-*/]\\.");
 const tenDigitsMax = checkMatchingPattern("\\d{11,}");
 const tenOperationsMax = checkMatchingPattern("[+\\-*/^]{10,}");
-const checkConsecutiveOperations = (str) => {
-  return consecutiveOperations(str) ? Left(str) : Right(str);
+
+const checkLastElement = (str) => {
+  return isNaN(str[str.length - 1]) ? Left(str) : Right(str);
 };
-const checkTwoDots = (str) => {
-  return twoDots(str) ? Left(str) : Right(str);
+const checkFirstElement = (str) => {
+  return isNaN(str[0]) ? Left(str) : Right(str);
 };
-const checkEmptyDot = (str) => {
-  return emptyDot(str) ? Left(str) : Right(str);
-};
-const checkDoubleDots = (str) => {
-  return doubleDots(str) ? Left(str) : Right(str);
-};
-const checkTenDigitsMax = (str) => {
-  return tenDigitsMax(str) ? Left(str) : Right(str);
-};
-const checktenOperationsMax = (str) => {
-  return tenOperationsMax(str) ? Left(str) : Right(str);
+const etherCheck = (exp) => (str) => {
+  return exp(str) ? Left(str) : Right(str);
 };
 
 const validateExpression = compose(
-  chain(checktenOperationsMax),
-  chain(checkTenDigitsMax),
-  chain(checkTwoDots),
-  chain(checkDoubleDots),
-  chain(checkEmptyDot),
-  chain(checkConsecutiveOperations),
+  chain(etherCheck(tenOperationsMax)),
+  chain(etherCheck(tenDigitsMax)),
+  chain(etherCheck(twoDots)),
+  chain(etherCheck(doubleDots)),
+  chain(etherCheck(emptyDot)),
+  chain(etherCheck(consecutiveOperations)),
   checkFirstElement
 );
 const processExpression = compose(
@@ -95,7 +79,6 @@ const processExpression = compose(
   checkLastElement
 );
 const arrNumOp = (str) => {
-  console.log(str);
   const numbers = transformToNumbers(str.filter((_, i) => i % 2 === 0));
   const operators = str.filter((_, i) => i % 2 !== 0);
   return { numbers, operators };
@@ -105,8 +88,8 @@ const calculateResult = compose(
   map(arrNumOp),
   processExpression
 );
-export default function App() {
-  const [display, setDisplay] = useState("0");
+function App({ initialExpression = "0" }) {
+  const [display, setDisplay] = useState(initialExpression);
 
   const handleNumberClick = (e) => {
     const number = e.target.getAttribute("data-number");
@@ -383,12 +366,13 @@ export default function App() {
   function Display() {
     return (
       <input
+        data-testid="display"
         type="text"
         id="display"
         class="w-full bg-gray-200 text-right 
                       p-4 mb-4 border border-gray-300 
                       rounded-md focus:outline-none"
-        placeholder={display}
+        value={display}
         disabled
       />
     );
@@ -422,3 +406,4 @@ export default function App() {
     </body>
   );
 }
+export default App;
