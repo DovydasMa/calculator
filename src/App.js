@@ -157,98 +157,268 @@ export default function App() {
     setDisplay(`0`);
   };
 
-  function NumberButtons() {
+  function CalculatorButtons() {
     return (
       <>
-        <div id="numbers">
-          {["9", "8", "7"].map((number) => (
-            <button
-              key={number}
-              type="button"
-              data-number={number}
-              onClick={handleNumberClick}
-            >
-              {number}
-            </button>
-          ))}
-        </div>
-        <div id="numbers">
-          {["6", "5", "4"].map((number) => (
-            <button
-              key={number}
-              type="button"
-              data-number={number}
-              onClick={handleNumberClick}
-            >
-              {number}
-            </button>
-          ))}
-        </div>
-        <div id="numbers">
-          {" "}
-          {["3", "2", "1"].map((number) => (
-            <button
-              key={number}
-              type="button"
-              data-number={number}
-              onClick={handleNumberClick}
-            >
-              {number}
-            </button>
-          ))}
-        </div>
-        <div id="numbers">
-          {" "}
-          {["0"].map((number) => (
-            <button
-              key={number}
-              type="button"
-              data-number={number}
-              onClick={handleNumberClick}
-            >
-              {number}
-            </button>
-          ))}
+        <div class="grid grid-cols-4 gap-2" id="numbers">
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            onClick={handleDeleteAllClick}
+          >
+            C
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key="("
+            type="button"
+            data-operation="("
+            onClick={handleOperationClick}
+          >
+            (
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key=")"
+            type="button"
+            data-operation=")"
+            onClick={handleOperationClick}
+          >
+            )
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key="/"
+            type="button"
+            data-operation={"/"}
+            onClick={handleOperationClick}
+          >
+            /
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={7}
+            type="button"
+            data-number={7}
+            onClick={handleNumberClick}
+          >
+            {7}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={8}
+            type="button"
+            data-number={8}
+            onClick={handleNumberClick}
+          >
+            {8}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={9}
+            type="button"
+            data-number={9}
+            onClick={handleNumberClick}
+          >
+            {9}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key="*"
+            type="button"
+            data-operation="*"
+            onClick={handleOperationClick}
+          >
+            *
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={4}
+            type="button"
+            data-number={4}
+            onClick={handleNumberClick}
+          >
+            {4}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={5}
+            type="button"
+            data-number={5}
+            onClick={handleNumberClick}
+          >
+            {5}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={6}
+            type="button"
+            data-number={6}
+            onClick={handleNumberClick}
+          >
+            {6}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key="-"
+            type="button"
+            data-operation="-"
+            onClick={handleOperationClick}
+          >
+            -
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={1}
+            type="button"
+            data-number={1}
+            onClick={handleNumberClick}
+          >
+            {1}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={2}
+            type="button"
+            data-number={2}
+            onClick={handleNumberClick}
+          >
+            {2}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={3}
+            type="button"
+            data-number={3}
+            onClick={handleNumberClick}
+          >
+            {3}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key="+"
+            type="button"
+            data-operation="+"
+            onClick={handleOperationClick}
+          >
+            +
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key={0}
+            type="button"
+            data-number={0}
+            onClick={handleNumberClick}
+          >
+            {0}
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key="."
+            type="button"
+            data-operation="."
+            onClick={handleOperationClick}
+          >
+            .
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            key="="
+            type="button"
+            data-operation="="
+            onClick={handleOperationClick}
+          >
+            =
+          </button>
+          <button
+            class="bg-gray-300 hover:bg-gray-400 
+                           text-gray-800 font-bold py-2 
+                           px-4 rounded"
+            onClick={handleDeleteClick}
+          >
+            DEL
+          </button>
         </div>
       </>
     );
   }
 
-  function OperationButtons() {
+  function Display() {
     return (
-      <div id="arithmetic-operations">
-        {[".", "*", "/", "-", "+", "="].map((operation) => (
-          <button
-            key={operation}
-            type="button"
-            data-operation={operation}
-            onClick={handleOperationClick}
-          >
-            {operation}
-          </button>
-        ))}
-      </div>
-    );
-  }
-  function DeleteButtons() {
-    return (
-      <div id="delete">
-        <button type="button" onClick={handleDeleteClick}>
-          DEL
-        </button>
-        <button type="button" onClick={handleDeleteAllClick}>
-          C
-        </button>
-      </div>
+      <input
+        type="text"
+        id="display"
+        class="w-full bg-gray-200 text-right 
+                      p-4 mb-4 border border-gray-300 
+                      rounded-md focus:outline-none"
+        placeholder={display}
+        disabled
+      />
     );
   }
 
   return (
-    <div>
-      <div id="display">{display}</div>
-      <NumberButtons />
-      <OperationButtons />
-      <DeleteButtons />
-    </div>
+    <body
+      class="bg-gray-100 flex justify-center 
+             items-center h-screen"
+    >
+      <div
+        class="bg-white p-8 rounded-lg shadow-lg 
+                border-2 border-green-500"
+      >
+        <h1
+          class="text-3xl font-bold 
+                   text-center mb-4"
+        >
+          Calculator
+        </h1>
+
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+          integrity="sha384-HtMZLkYo+pR5/u7zCzXxMJP6QoNnQJt1qkHM0EaOPvGDIzaVZbmYr/TlvUZ/sKAg"
+          crossorigin="anonymous"
+        ></link>
+        <Display />
+        <CalculatorButtons />
+      </div>
+    </body>
   );
 }
