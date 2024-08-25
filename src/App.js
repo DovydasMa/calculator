@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import crocks from "crocks";
-
+import composeK from "crocks/helpers/composeK";
 const { Either, curry, compose, map, chain } = crocks;
 
 const { Left, Right } = Either;
@@ -64,13 +64,13 @@ const etherCheck = (exp) => (str) => {
   return exp(str) ? Left(str) : Right(str);
 };
 
-const validateExpression = compose(
-  chain(etherCheck(tenOperationsMax)),
-  chain(etherCheck(tenDigitsMax)),
-  chain(etherCheck(twoDots)),
-  chain(etherCheck(doubleDots)),
-  chain(etherCheck(emptyDot)),
-  chain(etherCheck(consecutiveOperations)),
+const validateExpression = composeK(
+  etherCheck(tenOperationsMax),
+  etherCheck(tenDigitsMax),
+  etherCheck(twoDots),
+  etherCheck(doubleDots),
+  etherCheck(emptyDot),
+  etherCheck(consecutiveOperations),
   checkFirstElement
 );
 const processExpression = compose(
