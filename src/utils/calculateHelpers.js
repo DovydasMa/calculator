@@ -1,5 +1,4 @@
-import { Either, curry, compose, map, chain } from "crocks";
-import composeK from "crocks/helpers/composeK";
+import {composeK, Either, curry, compose, map, chain } from "crocks";
 
 const { Left, Right } = Either;
 
