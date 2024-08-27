@@ -1,6 +1,5 @@
 import React from "react";
-
-const OperatorButton = ({ name, onClick }) => {
+function OperatorButton({ name, onClick }) {
   return (
     <button
       className="bg-gray-300 hover:bg-gray-400 
@@ -14,6 +13,6 @@ const OperatorButton = ({ name, onClick }) => {
       {name}
     </button>
   );
-};
+}
 
 export default OperatorButton;
