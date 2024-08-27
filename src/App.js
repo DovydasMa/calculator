@@ -9,8 +9,7 @@ function App({ initialExpression = "0" }) {
   const [display, setDisplay] = useState(initialExpression);
 
   const handleValidation = (validateValue, message) => {
-    const result = validateExpression(validateValue);
-    result.either(
+    validateExpression(validateValue).either(
       (err) => {
         console.error(message + err);
       },
@@ -21,19 +20,17 @@ function App({ initialExpression = "0" }) {
   };
   const handleNumberClick = (e) => {
     const number = e.target.getAttribute("data-number");
-    const validateValue = display === "0" ? number : display + number;
-    handleValidation(validateValue, "Trying to enter illegal expression: ");
+    handleValidation(
+      display === "0" ? number : display + number,
+      "Trying to enter illegal expression: "
+    );
   };
 
   const handleOperationClick = (e) => {
     const operation = e.target.getAttribute("data-operation");
-    const validateValue = display + operation;
-    const result = validateExpression(validateValue);
-    handleValidation(validateValue, "Trying to enter illegal expression: ");
 
     if (operation === "=") {
-      const result = calculateResult(display);
-      result.either(
+      calculateResult(display).either(
         (err) => {
           setDisplay(`${err}`);
           console.error("Can't calculate this expression: " + display);
@@ -41,6 +38,11 @@ function App({ initialExpression = "0" }) {
         (res) => {
           setDisplay(`${res}`);
         }
+      );
+    } else {
+      handleValidation(
+        display + operation,
+        "Trying to enter illegal expression: "
       );
     }
   };
@@ -77,4 +79,3 @@ function App({ initialExpression = "0" }) {
 }
 
 export default App;
-
