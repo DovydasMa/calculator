@@ -1,6 +1,6 @@
 import React from "react";
 
-function Display({ display }) {
+const Display = ({ display }) => {
   return (
     <input
       data-testid="display"
