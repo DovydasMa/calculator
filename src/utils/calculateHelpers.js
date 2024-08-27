@@ -39,7 +39,7 @@ export const calculate = ({ numbers, operators }) => {
 };
 const validString = curry((exp, str) => str.replace(new RegExp(exp, "g"), ""));
 const onlyNumbersOperators = validString("0-9+\\-*/.");
-const checkMatchingPattern = (exp, str) => new RegExp(exp).test(str);
+const checkMatchingPattern = curry((exp, str) => new RegExp(exp).test(str));
 const splitString = (exp, str) => str.match(new RegExp(exp, "g"));
 
 const etherCheck = (exp) => (str) => {
@@ -75,5 +75,4 @@ export const calculateResult = compose(
   map(arrNumOp),
   processExpression
 );
-
 
