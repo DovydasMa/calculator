@@ -1,4 +1,4 @@
-import {composeK, Either, curry, compose, map, chain } from "crocks";
+import { composeK, Either, curry, compose, map, chain } from "crocks";
 
 const { Left, Right } = Either;
 
@@ -37,46 +37,35 @@ export const calculate = curry(({ numbers, operators }) => {
 
   return res;
 });
-
-const transformToNumbers = map(parseFloat);
 const validString = curry((exp, str) => str.replace(new RegExp(exp, "g"), ""));
-const onlyNumbersOperators = validString("0-9+\\-*/.");
-const splitString = curry((exp, str) => str.match(new RegExp(exp, "g")));
-const splitNumbersOperators = splitString("(\\d+\\.\\d+|\\d+)|([+\\-*/])");
 const checkMatchingPattern = curry((exp, str) => new RegExp(exp).test(str));
-const consecutiveOperations = checkMatchingPattern("[+\\-*/]{2,}");
-const twoDots = checkMatchingPattern("\\d+\\.\\d+\\.$");
-const doubleDots = checkMatchingPattern("\\d*\\.\\.\\d*");
-const emptyDot = checkMatchingPattern("[+\\-*/]\\.");
-const tenDigitsMax = checkMatchingPattern("\\d{11,}");
-const tenOperationsMax = checkMatchingPattern("[+\\-*/^]{10,}");
-
+const splitString = curry((exp, str) => str.match(new RegExp(exp, "g")));
+const onlyNumbersOperators = validString("0-9+\\-*/.");
+const etherCheck = (exp) => (str) => {
+  return exp(str) ? Left(str) : Right(str);
+};
 const checkLastElement = (str) => {
   return isNaN(str[str.length - 1]) ? Left(str) : Right(str);
 };
 const checkFirstElement = (str) => {
   return isNaN(str[0]) ? Left(str) : Right(str);
 };
-const etherCheck = (exp) => (str) => {
-  return exp(str) ? Left(str) : Right(str);
-};
-
 export const validateExpression = composeK(
-  etherCheck(tenOperationsMax),
-  etherCheck(tenDigitsMax),
-  etherCheck(twoDots),
-  etherCheck(doubleDots),
-  etherCheck(emptyDot),
-  etherCheck(consecutiveOperations),
+  etherCheck(checkMatchingPattern("[+\\-*/^]{10,}")),
+  etherCheck(checkMatchingPattern("\\d{11,}")),
+  etherCheck(checkMatchingPattern("\\d+\\.\\d+\\.$")),
+  etherCheck(checkMatchingPattern("\\d*\\.\\.\\d*")),
+  etherCheck(checkMatchingPattern("[+\\-*/]\\.")),
+  etherCheck(checkMatchingPattern("[+\\-*/]{2,}")),
   checkFirstElement
 );
 export const processExpression = compose(
-  chain((str) => Right(splitNumbersOperators(str))),
+  chain((str) => Right(splitString("(\\d+\\.\\d+|\\d+)|([+\\-*/])", str))),
   map(onlyNumbersOperators),
   checkLastElement
 );
 export const arrNumOp = (str) => {
-  const numbers = transformToNumbers(str.filter((_, i) => i % 2 === 0));
+  const numbers = str.filter((_, i) => i % 2 === 0).map(parseFloat);
   const operators = str.filter((_, i) => i % 2 !== 0);
   return { numbers, operators };
 };
@@ -85,3 +74,4 @@ export const calculateResult = compose(
   map(arrNumOp),
   processExpression
 );
+
