@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { composeK, Either, curry, compose, map, chain } from "crocks";
+import { React, useState } from "react";
+import Either from "crocks";
 import Display from "./components/Display";
 import CalculatorButtons from "./components/CalculatorButtons";
 import Title from "./components/Title";
