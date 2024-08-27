@@ -23,6 +23,7 @@ export const calculate = ({ numbers, operators }) => {
     }
   }
   let res = numbers[0];
+
   for (let i = 0; i < operators.length; i++) {
     const num = numbers[i + 1];
     switch (operators[i]) {
@@ -52,17 +53,26 @@ export const validateExpression = composeK(
   etherCheck(checkMatchingPattern("\\d+\\.\\d+\\.$")),
   etherCheck(checkMatchingPattern("\\d*\\.\\.\\d*")),
   etherCheck(checkMatchingPattern("[+\\-*/]\\.")),
-  etherCheck(checkMatchingPattern("[+\\-*/]{2,}")),
-  (str) => (isNaN(str[0]) ? Left(str) : Right(str))
+  etherCheck(checkMatchingPattern("[+\\-*/]{2,}"))
 );
 export const processExpression = compose(
   chain((str) => Right(splitString("(\\d+\\.\\d+|\\d+)|([+\\-*/])", str))),
   chain((str) => Right(validString("0-9+\\-*/.", str))),
   (str) => (isNaN(str[str.length - 1]) ? Left(str) : Right(str))
 );
-export const arrNumOp = (str) => {
-  const numbers = str.filter((_, i) => i % 2 === 0).map(parseFloat);
-  const operators = str.filter((_, i) => i % 2 !== 0);
+export const arrNumOp = (arr) => {
+  let numbers = [];
+  let operators = [];
+  if (arr[0] === "-") {
+    numbers.push(parseFloat(arr[0] + arr[1]));
+    arr.splice(0, 2);
+    operators = arr.filter((_, i) => i % 2 === 0);
+    numbers = numbers.concat(arr.filter((_, i) => i % 2 !== 0).map(parseFloat));
+  } else {
+    numbers = arr.filter((_, i) => i % 2 === 0).map(parseFloat);
+    operators = arr.filter((_, i) => i % 2 !== 0);
+  }
+
   return { numbers, operators };
 };
 export const calculateResult = compose(
