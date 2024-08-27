@@ -1,6 +1,6 @@
 import React from "react";
 
-function CalculatorStyleLink() {
+const CalculatorStyleLink = () => {
   return (
     <link
       rel="stylesheet"
@@ -9,6 +9,6 @@ function CalculatorStyleLink() {
       crossorigin="anonymous"
     ></link>
   );
-}
+};
 
 export default CalculatorStyleLink;
