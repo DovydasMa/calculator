@@ -8,32 +8,28 @@ import { calculateResult, validateExpression } from "./utils/calculateHelpers";
 function App({ initialExpression = "0" }) {
   const [display, setDisplay] = useState(initialExpression);
 
-  const handleNumberClick = (e) => {
-    const number = e.target.getAttribute("data-number");
-    const validateValue = display === "0" ? number : display + number;
+  const handleValidation = (validateValue, message) => {
     const result = validateExpression(validateValue);
     result.either(
       (err) => {
-        console.error("Trying to enter illegal expression: " + err);
+        console.error(message + err);
       },
       (res) => {
         setDisplay(`${res}`);
       }
     );
   };
+  const handleNumberClick = (e) => {
+    const number = e.target.getAttribute("data-number");
+    const validateValue = display === "0" ? number : display + number;
+    handleValidation(validateValue, "Trying to enter illegal expression: ");
+  };
 
   const handleOperationClick = (e) => {
     const operation = e.target.getAttribute("data-operation");
     const validateValue = display + operation;
     const result = validateExpression(validateValue);
-    result.either(
-      (err) => {
-        console.error("Trying to enter illegal expression: " + err);
-      },
-      (res) => {
-        setDisplay(`${res}`);
-      }
-    );
+    handleValidation(validateValue, "Trying to enter illegal expression: ");
 
     if (operation === "=") {
       const result = calculateResult(display);
@@ -81,3 +77,4 @@ function App({ initialExpression = "0" }) {
 }
 
 export default App;
+
