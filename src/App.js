@@ -1,12 +1,9 @@
 import { React, useState } from "react";
-import Either from "crocks";
 import Display from "./components/Display";
 import CalculatorButtons from "./components/CalculatorButtons";
 import Title from "./components/Title";
 import CalculatorStyleLink from "./components/CalculatorStyleLink";
 import { calculateResult, validateExpression } from "./utils/calculateHelpers";
-
-const { Left, Right } = Either;
 
 function App({ initialExpression = "0" }) {
   const [display, setDisplay] = useState(initialExpression);
