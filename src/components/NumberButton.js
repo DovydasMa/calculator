@@ -1,6 +1,6 @@
 import React from "react";
 
-const NumberButton = ({ name, onClick }) => {
+function NumberButton({ name, onClick }) {
   return (
     <button
       className="bg-gray-300 hover:bg-gray-400 
@@ -14,6 +14,7 @@ const NumberButton = ({ name, onClick }) => {
       {name}
     </button>
   );
-};
+}
 
 export default NumberButton;
+
