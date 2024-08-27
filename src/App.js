@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import crocks from "crocks";
+import { Either, curry, compose, map, chain } from "crocks";
 import composeK from "crocks/helpers/composeK";
-const { Either, curry, compose, map, chain } = crocks;
 
 const { Left, Right } = Either;
 
@@ -140,229 +139,6 @@ function App({ initialExpression = "0" }) {
     setDisplay(`0`);
   };
 
-  function CalculatorButtons() {
-    return (
-      <>
-        <div class="grid grid-cols-4 gap-2" id="numbers">
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            onClick={handleDeleteAllClick}
-          >
-            C
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key="("
-            type="button"
-            data-operation="("
-            onClick={handleOperationClick}
-          >
-            (
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key=")"
-            type="button"
-            data-operation=")"
-            onClick={handleOperationClick}
-          >
-            )
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key="/"
-            type="button"
-            data-operation={"/"}
-            onClick={handleOperationClick}
-          >
-            /
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={7}
-            type="button"
-            data-number={7}
-            onClick={handleNumberClick}
-          >
-            {7}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={8}
-            type="button"
-            data-number={8}
-            onClick={handleNumberClick}
-          >
-            {8}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={9}
-            type="button"
-            data-number={9}
-            onClick={handleNumberClick}
-          >
-            {9}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key="*"
-            type="button"
-            data-operation="*"
-            onClick={handleOperationClick}
-          >
-            *
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={4}
-            type="button"
-            data-number={4}
-            onClick={handleNumberClick}
-          >
-            {4}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={5}
-            type="button"
-            data-number={5}
-            onClick={handleNumberClick}
-          >
-            {5}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={6}
-            type="button"
-            data-number={6}
-            onClick={handleNumberClick}
-          >
-            {6}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key="-"
-            type="button"
-            data-operation="-"
-            onClick={handleOperationClick}
-          >
-            -
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={1}
-            type="button"
-            data-number={1}
-            onClick={handleNumberClick}
-          >
-            {1}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={2}
-            type="button"
-            data-number={2}
-            onClick={handleNumberClick}
-          >
-            {2}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={3}
-            type="button"
-            data-number={3}
-            onClick={handleNumberClick}
-          >
-            {3}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key="+"
-            type="button"
-            data-operation="+"
-            onClick={handleOperationClick}
-          >
-            +
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key={0}
-            type="button"
-            data-number={0}
-            onClick={handleNumberClick}
-          >
-            {0}
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key="."
-            type="button"
-            data-operation="."
-            onClick={handleOperationClick}
-          >
-            .
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            key="="
-            type="button"
-            data-operation="="
-            onClick={handleOperationClick}
-          >
-            =
-          </button>
-          <button
-            class="bg-gray-300 hover:bg-gray-400 
-                           text-gray-800 font-bold py-2 
-                           px-4 rounded"
-            onClick={handleDeleteClick}
-          >
-            DEL
-          </button>
-        </div>
-      </>
-    );
-  }
-
   function Display() {
     return (
       <input
@@ -378,6 +154,100 @@ function App({ initialExpression = "0" }) {
     );
   }
 
+  const DeleteButton = ({ name, onClick }) => {
+    return (
+      <button
+        className="bg-gray-300 hover:bg-gray-400 
+                   text-gray-800 font-bold py-2 
+                   px-4 rounded"
+        onClick={onClick}
+      >
+        {name}
+      </button>
+    );
+  };
+
+  const OperatorButton = ({ name }) => {
+    return (
+      <button
+        className="bg-gray-300 hover:bg-gray-400 
+                   text-gray-800 font-bold py-2 
+                   px-4 rounded"
+        key={name}
+        type="button"
+        data-operation={name}
+        onClick={handleOperationClick}
+      >
+        {name}
+      </button>
+    );
+  };
+  const NumberButton = ({ name }) => {
+    return (
+      <button
+        className="bg-gray-300 hover:bg-gray-400 
+                   text-gray-800 font-bold py-2 
+                   px-4 rounded"
+        key={name}
+        type="button"
+        data-number={name}
+        onClick={handleNumberClick}
+      >
+        {name}
+      </button>
+    );
+  };
+
+  function CalculatorStyleLink() {
+    return (
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+        integrity="sha384-HtMZLkYo+pR5/u7zCzXxMJP6QoNnQJt1qkHM0EaOPvGDIzaVZbmYr/TlvUZ/sKAg"
+        crossorigin="anonymous"
+      ></link>
+    );
+  }
+  function Title() {
+    return (
+      <h1
+        class="text-3xl font-bold 
+               text-center mb-4"
+      >
+        Calculator
+      </h1>
+    );
+  }
+
+  function CalculatorButtons() {
+    return (
+      <>
+        <div class="grid grid-cols-4 gap-2" id="numbers">
+          <DeleteButton name="C" onClick={handleDeleteAllClick} />
+          <OperatorButton name="(" />
+          <OperatorButton name=")" />
+          <OperatorButton name="/" />
+          <NumberButton name="7" />
+          <NumberButton name="8" />
+          <NumberButton name="9" />
+          <OperatorButton name="*" />
+          <NumberButton name="4" />
+          <NumberButton name="5" />
+          <NumberButton name="6" />
+          <OperatorButton name="-" />
+          <NumberButton name="1" />
+          <NumberButton name="2" />
+          <NumberButton name="3" />
+          <OperatorButton name="+" />
+          <NumberButton name="0" />
+          <OperatorButton name="." />
+          <OperatorButton name="=" />
+          <DeleteButton name="DEL" onClick={handleDeleteClick} />
+        </div>
+      </>
+    );
+  }
+
   return (
     <body
       class="bg-gray-100 flex justify-center 
@@ -387,19 +257,8 @@ function App({ initialExpression = "0" }) {
         class="bg-white p-8 rounded-lg shadow-lg 
                 border-2 border-green-500"
       >
-        <h1
-          class="text-3xl font-bold 
-                   text-center mb-4"
-        >
-          Calculator
-        </h1>
-
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-          integrity="sha384-HtMZLkYo+pR5/u7zCzXxMJP6QoNnQJt1qkHM0EaOPvGDIzaVZbmYr/TlvUZ/sKAg"
-          crossorigin="anonymous"
-        ></link>
+        <Title />
+        <CalculatorStyleLink />
         <Display />
         <CalculatorButtons />
       </div>
@@ -407,3 +266,4 @@ function App({ initialExpression = "0" }) {
   );
 }
 export default App;
+
