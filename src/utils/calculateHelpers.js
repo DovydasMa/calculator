@@ -2,7 +2,7 @@ import { composeK, Either, curry, compose, map, chain } from "crocks";
 
 const { Left, Right } = Either;
 
-export const calculate = curry(({ numbers, operators }) => {
+export const calculate = ({ numbers, operators }) => {
   for (let i = 0; i < operators.length; i++) {
     if (operators[i] === "*" || operators[i] === "/") {
       const num1 = numbers[i];
@@ -36,11 +36,12 @@ export const calculate = curry(({ numbers, operators }) => {
   }
 
   return res;
-});
+};
 const validString = curry((exp, str) => str.replace(new RegExp(exp, "g"), ""));
-const checkMatchingPattern = curry((exp, str) => new RegExp(exp).test(str));
-const splitString = curry((exp, str) => str.match(new RegExp(exp, "g")));
 const onlyNumbersOperators = validString("0-9+\\-*/.");
+const checkMatchingPattern = (exp, str) => new RegExp(exp).test(str);
+const splitString = (exp, str) => str.match(new RegExp(exp, "g"));
+
 const etherCheck = (exp) => (str) => {
   return exp(str) ? Left(str) : Right(str);
 };
@@ -74,4 +75,5 @@ export const calculateResult = compose(
   map(arrNumOp),
   processExpression
 );
+
 
