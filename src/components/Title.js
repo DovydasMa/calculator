@@ -1,6 +1,6 @@
 import React from "react";
 
-function Title() {
+const Title = () => {
   return (
     <h1
       className="text-3xl font-bold 
@@ -9,6 +9,6 @@ function Title() {
       Calculator
     </h1>
   );
-}
+};
 
 export default Title;
