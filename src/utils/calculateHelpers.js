@@ -37,7 +37,7 @@ export const calculate = ({ numbers, operators }) => {
 
   return res;
 };
-const validString = curry((exp, str) => str.replace(new RegExp(exp, "g"), ""));
+const validString = (exp, str) => str.replace(new RegExp(exp, "g"), "");
 
 const checkMatchingPattern = curry((exp, str) => new RegExp(exp).test(str));
 const splitString = (exp, str) => str.match(new RegExp(exp, "g"));
@@ -47,7 +47,6 @@ const etherCheck = (exp) => (str) => {
 };
 
 export const validateExpression = composeK(
-  etherCheck(checkMatchingPattern("0-9+\\-*/.")),
   etherCheck(checkMatchingPattern("[+\\-*/^]{10,}")),
   etherCheck(checkMatchingPattern("\\d{11,}")),
   etherCheck(checkMatchingPattern("\\d+\\.\\d+\\.$")),
@@ -58,6 +57,7 @@ export const validateExpression = composeK(
 );
 export const processExpression = compose(
   chain((str) => Right(splitString("(\\d+\\.\\d+|\\d+)|([+\\-*/])", str))),
+  chain((str) => Right(validString("0-9+\\-*/.", str))),
   (str) => (isNaN(str[str.length - 1]) ? Left(str) : Right(str))
 );
 export const arrNumOp = (str) => {
@@ -70,4 +70,5 @@ export const calculateResult = compose(
   map(arrNumOp),
   processExpression
 );
+
 
