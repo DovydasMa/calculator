@@ -1,6 +1,4 @@
-import React from "react";
-
-function DeleteButton({ name, onClick }) {
+const DeleteButton = ({ name, onClick }) => {
   return (
     <button
       className="bg-gray-300 hover:bg-gray-400 
