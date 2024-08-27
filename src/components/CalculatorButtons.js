@@ -3,12 +3,12 @@ import DeleteButton from "./DeleteButton";
 import OperatorButton from "./OperatorButton";
 import NumberButton from "./NumberButton";
 
-function CalculatorButtons({
+const CalculatorButtons = ({
   onNumberClick,
   onOperationClick,
   onDeleteClick,
   onDeleteAllClick,
-}) {
+}) => {
   return (
     <div className="grid grid-cols-4 gap-2" id="numbers">
       <DeleteButton name="C" onClick={onDeleteAllClick} />
@@ -33,6 +33,6 @@ function CalculatorButtons({
       <DeleteButton name="DEL" onClick={onDeleteClick} />
     </div>
   );
-}
+};
 
 export default CalculatorButtons;
