@@ -60,7 +60,7 @@ export const processExpression = compose(
   chain((str) => Right(validString("0-9+\\-*/.", str))),
   (str) => (isNaN(str[str.length - 1]) ? Left(str) : Right(str))
 );
-export const arrNumOp = (arr) => {
+export const sepNumOp = (arr) => {
   let numbers = [];
   let operators = [];
   if (arr[0] === "-") {
@@ -77,8 +77,6 @@ export const arrNumOp = (arr) => {
 };
 export const calculateResult = compose(
   map(calculate),
-  map(arrNumOp),
+  map(sepNumOp),
   processExpression
 );
-
-
